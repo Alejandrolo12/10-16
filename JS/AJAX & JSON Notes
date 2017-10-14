@@ -1,0 +1,14 @@
+
+Competencies
+
+AJAX stands for Asynchronous Javascript and XML, but most people use JSON instead of XML now
+JSON stands for Javascript Object Notation
+JSON is the most common way of storing data in Javascript
+Data is stored in objects, like hashes
+For example, you have a variable cat that has a name, species, and favorite food. Name, species, favFood are keys, and the values would be “Meowsalot”, “cat”, and “fish”. Values can be accessed by calling the corresponding key of the object. Several these hashes can be stored together in an array as a JSON object
+AJAX likes to call data from a different source, a XML file, a JSON file, etc
+JSON actually makes syntax much cleaner than with XML because it is JS and we can just call corresponding keys and values
+
+Applications
+Understand JSON and JSON notation
+Utilize JSON for AJAX calls
