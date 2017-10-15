@@ -1,0 +1,210 @@
+In a new project directory, create a new index.html file.
+
+<html>
+<head>
+	<title>JSON and AJAX</title>
+	<link rel=”stylesheet” href=”css/styles.css”>
+</head>
+<body>
+	<header>
+		<h1>JSON and AJAX</h1>
+		<button id=“btn”>Fetch Info for 3 New Animals</button>
+	</header>
+<div id=”animal-info”></div>
+<script src=”js/main.js”></script>
+
+</body>
+</html>
+
+Create a js folder and a file called main.js inside of it.
+Create a css folder and a file called styles.css inside of it.
+In styles.css, paste in the following:
+html, body {
+  padding: 0;
+  margin: 0;
+}
+
+.hide-me {
+  visibility: hidden;
+  opacity: 0;
+  transform: scale(.75);
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 2.4em;
+  font-weight: normal;
+  display: inline-block;
+}
+
+body {
+  font-family: Helvetica, sans-serif;
+  padding: 50px 10%;
+}
+
+button {
+  background-color: #046380;
+  color: #FFF;
+  border: none;
+  padding: 10px 15px;
+  font-size: 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 2px 2px 0 #034154;
+  margin-bottom: 10px;
+  margin-left: 18px;
+  transition: opacity .4s ease-out, transform .4s ease-out, visibility .4s ease-out;
+  position: relative;
+  top: -10px;
+}
+
+button:hover {
+  background-color: #034F66;
+}
+
+button:active {
+  background-color: #034154;
+  box-shadow: none;
+  position: relative;
+  top: -8px;
+  left: 2px;
+}
+
+p {
+  padding: 4px 0 2px 8px;
+  line-height: 1.7;
+  border-bottom: 1px dotted #DDD;
+  list-style: none;
+  margin: 0;
+}
+
+
+In main.js create a variable pet
+
+var pets = [
+  {
+  "name": "Whiskers",
+  "species": "cat",
+  "favFood": "fish"
+  },
+  {
+  "name": "Spot",
+  "species": "dog",
+  "favFood": "bones"
+  }
+]
+
+This is JSON, basically an array of hashes. If you wanted to find out what Spot's favorite food was, you would call pets[1].favFood.
+It would return "bones".
+
+Now erase all that.
+We will be using a pre-populated JSON file for this purpose.
+
+Now, in main.js:
+
+var ourRequest = new XMLHttpRequest();
+// Most/all web browsers come with this XMLHttpRequest command. It establishes a connection with the URL we specify and lets us send/receive data
+ourRequest.open('GET', 'https://learnwebcode.github.io/json-example/animals-1.json');
+// XMLHttpRequests take an action like GET or POST, and a URL
+
+We're telling the browser to go to that URL and make a GET request
+
+Let's test if it works
+ourRequest.onLoad = function(){
+  console.log(ourRequest.responseText);
+};
+ourRequest.send();
+Check browser console
+
+Delete console.log() line.
+Instead: 
+var ourData = JSON.parse(ourRequest.responseText);
+console.log(ourData[0]);
+
+JSON.parse converts the responseText (originally just a string) into a JSON object.
+
+Now let's make our javascript event listeners.
+
+At the top of your main.js file:
+var btn = doucment.getElementById('btn')
+btn.addEventListener('click', function() {
+// paste in your AJAX call here
+  var ourRequest = new XMLHttpRequest();
+  ourRequest.open('GET', 'https://learnwebcode.github.io/json-example/animals-1.json');
+  ourRequest.onLoad = function(){
+    var ourData = JSON.parse(ourRequest.responseText);
+    console.log(ourData[0]);
+  };
+  ourRequest.send();
+});
+
+Reload page in browser, click the button, check console.
+Remove the console.log()
+Replace with renderHTML(ourData);
+
+At the top of main.js:
+var animalContainer = document.getElementById('animal-info');
+
+Create a new function underneath our listener:
+This will add new HTML elements to the page.
+function renderHTML(data){
+  var htmlSting = '';
+  // loop through our return data
+  for (i = 0; i < data.length, i++) {
+    htmlString += '<p>' + data[i].name + 'is a' + data[i].species + '.</p>';
+  }
+  // we are looping through and displaying each element's information in the form of a sentence
+  animalContainer.insertAdjacentHTML('beforeend', htmlString);
+  
+}
+
+Reload page, click button, check it out.
+If we keep clicking the button, it will return the same info. Let's fix this.
+Top of main.js, declare a new variable:
+var pageCounter = 1;
+
+In our ourRequest.open code, replace the url with this: 'https://www.learnwebcode.github.io/json-example/animals-' + pageCounter + '.json');
+
+Now at the end of our AJAX call, add in logic to increment the pageCounter variable:
+
+...
+ourRequest.send();
+pageCounter++;
+if (pageCounter > 3) {
+  btn.classList.add('hide-me');
+}
+});
+...
+
+In our styles.css, add a rule for '.hide-me'
+.hide-me {
+  visibility: hidden;
+  opacity: 0;
+}
+
+// Replaced the hard-coded value of 1 with our dynamic variable that will increment each time until it hits 3 in which case it should be hidden
+
+Reload page and test it.
+
+Now let's include the favorite foods.
+
+In our renderHTML function:
+htmlString += "<p>" + data[i].name + " is a " + data[i].species + " that likes to eat ";
+for (j = 0; j < data[i].foods.likes.length; j++) {
+  if (j == 0) {
+    htmlString += data[i].foods.likes[j];
+  } else {
+    htmlString += " and " + data[i].foods.likes[j];
+  };
+  // in case their are multiple favorite foods
+}
+htmlString += '.</p>';
+
+You can do essentially the same thing with the disliked food if you want. Just switch some words around.
+
+Otherwise, we're done.
+
+For a copy of the finished code, follow this link: https://codepen.io/anon/pen/RGOqQY
+
+
