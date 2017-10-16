@@ -12,11 +12,9 @@ Xochitl , Sharif
 
 Gino , Jonathan 
 
-Williams, Gloria , Alejandro 
-
 Chris , Josue 
 
-Robert , Russell 
+Robert , Williams, Alejandro 
 
 Emilio , Stanley 
 
